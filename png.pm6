@@ -3,7 +3,7 @@ module Png {
         regex TOP {<Length> <Type> <Data> <CRC> }
         # regex TOP {<Type>}
         regex Type { <IHDR> | <PLTE> | <IDAT> | <IEND> | <TRNS> | <CHRM> | <GAMA> | <ICCP> | <SBIT> | <SRGB> | <TEXT> | <ZTXT> | <ITXT> | <BKGD> | <HIST> | <PHYS> | <SPLT> | <TIME> }
-        regex Length {\w**8}
+        token Length {\w**8}
         regex IHDR {49484452}
         regex PLTE {504c5445}
         regex IDAT {49444154}
@@ -22,11 +22,8 @@ module Png {
         regex PHYS {70485973}
         regex SPLT {73504c54}
         regex TIME {74494d45}
-        regex Data {.+}
+        regex Data {[\d**2]*}
         regex CRC {\w**8}
     }
-
-    # grammar IHDR
-
 
 }

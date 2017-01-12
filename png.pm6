@@ -1,9 +1,11 @@
 module Png {
     grammar chunks {
-        regex TOP {<Length> <Type> <Data> <CRC> }
+        regex TOP { <Format>+ }
         # regex TOP {<Type>}
+        regex Format {[<Length> <Type> <Data> <CRC>]}
         regex Type { <IHDR> | <PLTE> | <IDAT> | <IEND> | <TRNS> | <CHRM> | <GAMA> | <ICCP> | <SBIT> | <SRGB> | <TEXT> | <ZTXT> | <ITXT> | <BKGD> | <HIST> | <PHYS> | <SPLT> | <TIME> }
-        token Length {\w**8}
+        regex Length {\w**8}
+        
         regex IHDR {49484452}
         regex PLTE {504c5445}
         regex IDAT {49444154}
@@ -22,8 +24,19 @@ module Png {
         regex PHYS {70485973}
         regex SPLT {73504c54}
         regex TIME {74494d45}
-        regex Data {[\d**2]*}
+        regex Data {<IHDR_Chunk>}
         regex CRC {\w**8}
+
+        regex IHDR_Chunk { <IHDR_Width> <IHDR_Height> <IHDR_BitDepth> <IHDR_ColorType> <IHDR_Compression> <IHDR_Filter> <IHDR_Interlace>}
+        regex IHDR_Width {\w**8}
+        regex IHDR_Height {\w**8}
+        regex IHDR_BitDepth {\w**2}
+        regex IHDR_ColorType {\w**2}
+        regex IHDR_Compression {\w**2}
+        regex IHDR_Filter {\w**2}
+        regex IHDR_Interlace {\w**2}
+
+
     }
 
 }

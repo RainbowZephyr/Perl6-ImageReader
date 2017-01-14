@@ -1,6 +1,6 @@
 module Png {
     grammar chunks {
-        regex TOP { <Format>+ }
+        regex TOP { [<Length><Data><CRC>]+? }
         # regex TOP {<Type>}
         regex Format {[<Length><Data><CRC>]}
         # regex Type { <IHDR> | <PLTE> | <IDAT> | <IEND> | <TRNS> | <CHRM> | <GAMA> | <ICCP> | <SBIT> | <SRGB> | <TEXT> | <ZTXT> | <ITXT> | <BKGD> | <HIST> | <PHYS> | <SPLT> | <TIME> }
@@ -9,6 +9,11 @@ module Png {
         proto regex Data {*}
         regex Data:sym<IHDR> {<IHDR><IHDR_Chunk>}
         regex Data:sym<SBIT> {<SBIT><SBIT_Format>}
+        regex Data:sym<PLTE> {<PLTE><PLTE_Chunk>}
+        regex Data:sym<BKGD> {<BKGD><BKGD_Index>}
+        regex Data:sym<TEXT> {<TEXT>}
+        regex Data:sym<IDAT> {<IDAT>}
+
 
         regex IHDR {49484452}
         regex PLTE {504c5445}
@@ -40,17 +45,33 @@ module Png {
         regex IHDR_Interlace {\w**2}
 
         proto regex SBIT_Format {*}
-        regex SBIT_Format:sym<Format1> {<SBIT_GrayBits>}
-        regex SBIT_Format:sym<Format2> {<SBIT_GrayBits><SBIT_AlphaBits>}
-        regex SBIT_Format:sym<Format3> {<SBIT_RedBits><SBIT_GreenBits><SBIT_BlueBits>}
-        regex SBIT_Format:sym<Format4> {<SBIT_RedBits><SBIT_GreenBits><SBIT_BlueBits><SBIT_AlphaBits>}
+        regex SBIT_Format:sym<Format1> {<GrayBits>}
+        regex SBIT_Format:sym<Format2> {<GrayBits><AlphaBits>}
+        regex SBIT_Format:sym<Format3> {<RedBits><GreenBits><BlueBits>}
+        regex SBIT_Format:sym<Format4> {<RedBits><GreenBits><BlueBits><AlphaBits>}
 
-        regex SBIT_GrayBits {\w**2}
-        regex SBIT_RedBits {\w**2}
-        regex SBIT_GreenBits {\w**2}
-        regex SBIT_BlueBits {\w**2}
-        regex SBIT_AlphaBits {\w**2}
+        regex PLTE_Chunk {<RedBits><GreenBits><BlueBits>}
 
+        regex GrayBits {\w**2}
+        regex RedBits {\w**2}
+        regex GreenBits {\w**2}
+        regex BlueBits {\w**2}
+        regex AlphaBits {\w**2}
+
+        regex BKGD_Index {\w**2}
+
+
+
+        #TODO: CHECK WORD SIZE BELOW
+        proto regex BKGD_Format {*}
+        regex BKGD_Format:sym<Format1> {<BKGD_Index>}
+        regex BKGD_Format:sym<Format2> {<GrayBits><AlphaBits>}
+        regex BKGD_Format:sym<Format3> {<RedBits><GreenBits><BlueBits>}
+
+        regex TEXT_Chunk {<TEXT_Keyword> <TEXT_Null> <TEXT_Text>}
+        regex TEXT_Keyword {[\w**2]}
+        regex TEXT_Null {\w**2}
+        regex TEXT_Text {\w**2}
 
     }
 

@@ -1,9 +1,9 @@
-module Png {
+le module Png {
     grammar chunks {
-        regex TOP { [<Length><Data><CRC>]+? }
+        regex TOP {<Format> }
         # regex TOP {<Type>}
         regex Format {[<Length><Data><CRC>]}
-        # regex Type { <IHDR> | <PLTE> | <IDAT> | <IEND> | <TRNS> | <CHRM> | <GAMA> | <ICCP> | <SBIT> | <SRGB> | <TEXT> | <ZTXT> | <ITXT> | <BKGD> | <HIST> | <PHYS> | <SPLT> | <TIME> }
+
         regex Length {\w**8}
 
         proto regex Data {*}
@@ -11,9 +11,11 @@ module Png {
         regex Data:sym<SBIT> {<SBIT><SBIT_Format>}
         regex Data:sym<PLTE> {<PLTE><PLTE_Chunk>}
         regex Data:sym<BKGD> {<BKGD><BKGD_Index>}
-        regex Data:sym<TEXT> {<TEXT>}
+        regex Data:sym<TEXT> {<TEXT><TEXT_Chunk>}
         regex Data:sym<IDAT> {<IDAT>}
-
+        regex Data:sym<GAMA> {<GAMA><GAMA_Chunk>}
+        regex Data:sym<HIST> {<HIST><HIST_Chunk>+}
+        regex Data:sym<CHRM> {<CHRM> <CHRM_Chunk>}
 
         regex IHDR {49484452}
         regex PLTE {504c5445}
@@ -45,34 +47,70 @@ module Png {
         regex IHDR_Interlace {\w**2}
 
         proto regex SBIT_Format {*}
-        regex SBIT_Format:sym<Format1> {<GrayBits>}
-        regex SBIT_Format:sym<Format2> {<GrayBits><AlphaBits>}
-        regex SBIT_Format:sym<Format3> {<RedBits><GreenBits><BlueBits>}
-        regex SBIT_Format:sym<Format4> {<RedBits><GreenBits><BlueBits><AlphaBits>}
+        regex SBIT_Format:sym<Format1> {<SBIT_GrayBits>}
+        regex SBIT_Format:sym<Format2> {<SBIT_GrayBits><SBIT_AlphaBits>}
+        regex SBIT_Format:sym<Format3> {<SBIT_RedBits><SBIT_GreenBits><SBIT_BlueBits>}
+        regex SBIT_Format:sym<Format4> {<SBIT_RedBits><SBIT_GreenBits><SBIT_BlueBits><SBIT_AlphaBits>}
 
         regex PLTE_Chunk {<RedBits><GreenBits><BlueBits>}
 
-        regex GrayBits {\w**2}
-        regex RedBits {\w**2}
-        regex GreenBits {\w**2}
-        regex BlueBits {\w**2}
-        regex AlphaBits {\w**2}
+        regex SBIT_GrayBits {\w**2}
+        regex SBIT_RedBits {\w**2}
+        regex SBIT_GreenBits {\w**2}
+        regex SBIT_BlueBits {\w**2}
+        regex SBIT_AlphaBits {\w**2}
+
+        regex BKGD_GrayBits {\w**4}
+        regex BKGD_RedBits {\w**4}
+        regex BKGD_GreenBits {\w**4}
+        regex BKGD_BlueBits {\w**4}
+        regex BKGD_AlphaBits {\w**4}
+
+        regex GAMA_Chunk {\w**4}
+        regex HIST_Chunk {\w**4}
 
         regex BKGD_Index {\w**2}
+        regex BKGD_Value {\w**4}
 
-
-
-        #TODO: CHECK WORD SIZE BELOW
         proto regex BKGD_Format {*}
         regex BKGD_Format:sym<Format1> {<BKGD_Index>}
-        regex BKGD_Format:sym<Format2> {<GrayBits><AlphaBits>}
-        regex BKGD_Format:sym<Format3> {<RedBits><GreenBits><BlueBits>}
+        regex BKGD_Format:sym<Format2> {<BKGD_Value>}
+        regex BKGD_Format:sym<Format3> {<BKGD_RedBits><BKGD_GreenBits><BKGD_BlueBits>}
 
         regex TEXT_Chunk {<TEXT_Keyword> <TEXT_Null> <TEXT_Text>}
-        regex TEXT_Keyword {[\w**2]}
+        regex TEXT_Keyword {[\w**2]**1..89}
         regex TEXT_Null {\w**2}
         regex TEXT_Text {\w**2}
 
-    }
+        regex CHRM_Chunk {<CHRM_WhitePointX><CHRM_WhitePointY><CHRM_RedX><CHRM_RedY><CHRM_GreenX><CHRM_GreenY><CHRM_BlueX><CHRM_BlueY>}
+        regex CHRM_WhitePointX {\w**8}
+        regex CHRM_WhitePointY {\w**8}
+        regex CHRM_RedX {\w**8}
+        regex CHRM_RedY {\w**8}
+        regex CHRM_GreenX {\w**8}
+        regex CHRM_GreenY {\w**8}
+        regex CHRM_BlueX {\w**8}
+        regex CHRM_BlueY {\w**8}
 
+        regex PHYS_Chunk {<PHYS_PPX><PHYS_PPY><PHYS_UnitSpecifier>}
+        regex PHYS_PPX {\w**8}
+        regex PHYS_PPY {\w**8}
+        regex PHYS_UnitSpecifier {\w**2}
+
+        regex TIME_Chunk {<TIME_Year><TIME_Month><TIME_Day><TIME_Hour><TIME_Minute><TIME_Second>}
+        regex TIME_Year {\w**8}
+        regex TIME_Month {\w**2}
+        regex TIME_Day {\w**2}
+        regex TIME_Hour {\w**2}
+        regex TIME_Minute {\w**2}
+        regex TIME_Second {\w**2}
+
+        proto regex TRNS {*}
+        regex  TRNS_TransparencyValue {\w**4}
+        regex  TRNS_RedValue {\w**4}
+        regex  TRNS_GreenValue {\w**4}
+        regex  TRNS_BlueValue {\w**4}
+        regex  TRNS_TVArray {[\w**2]+}
+
+    }
 }

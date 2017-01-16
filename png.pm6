@@ -3,7 +3,7 @@ module Png {
         regex TOP {<Format> }
         # regex TOP {<Type>}
         regex Format {[<Length><Data><CRC>]}
-
+        regex PNG {89504E470D0A1A0A}
         regex Length {\w**8}
 
         proto regex Data {*}
@@ -62,7 +62,7 @@ module Png {
         proto regex TRNS_Format {*}
         regex TRNS_Format:sym<Format1> {<TRNS_Transparency>}
         regex TRNS_Format:sym<Format2> {<TRNS_Red><TRNS_Green><TRNS_Blue>}
-        regex TRNS_Format:sym<Format2> {<TRNS_Transparency_array>}
+        regex TRNS_Format:sym<Format3> {<TRNS_Transparency_array>}
 
         regex  TRNS_Transparency {\w**4}
         regex  TRNS_Red {\w**4}

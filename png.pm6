@@ -1,9 +1,11 @@
 module Png {
     grammar chunks {
-        regex TOP {<Format> }
-        # regex TOP {<Type>}
-        regex Format {[<Length><Data><CRC>]}
-        regex PNG {89504E470D0A1A0A}
+        regex TOP {[<Length><Data><CRC>] }
+
+        #DWORD = 4 bytes -> 8 hex digits
+        #WORD = 2 bytes -> 4 hex digits
+        #BYTE = 2 hex digit
+
         regex Length {\w**8}
 
         proto regex Data {*}

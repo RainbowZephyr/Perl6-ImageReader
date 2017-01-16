@@ -16,6 +16,11 @@ le module Png {
         regex Data:sym<GAMA> {<GAMA><GAMA_Chunk>}
         regex Data:sym<HIST> {<HIST><HIST_Chunk>+}
         regex Data:sym<CHRM> {<CHRM> <CHRM_Chunk>}
+        regex Data:sym<IEND> {<IEND>}
+        regex Data:sym<ICCP> {<ICCP>}
+        regex Data:sym<ZTXT> {<ZTXT><ZTXT_Chunk>}
+        regex Data:sym<ITXT> {<ITXT><ITXT_Chunk>}
+        regex Data:sym<PHYS> {<PHYS><PHYS_Chunk}
 
         regex IHDR {49484452}
         regex PLTE {504c5445}
@@ -111,6 +116,39 @@ le module Png {
         regex  TRNS_GreenValue {\w**4}
         regex  TRNS_BlueValue {\w**4}
         regex  TRNS_TVArray {[\w**2]+}
+
+        regex ICCP_Chunk {<ICCP_Profile_name><ICCP_Null><ICCP_Compression_method><ICCP_Compression_profile>}
+        regex ICCP_Profile_name {[\w**2]**1..79}
+        regex ICCP_Null {\w**2}
+        regex ICCP_Compression_method {\w**2}
+        regex ICCP_Compression_profile {\w**2}
+
+        regex ZTXT_Chunk {<ZTXT_Keyword><ZTXT_Null><ZTXT_Compression_method><ZTXT_Compression_profile>}
+        regex ZTXT_Keyword {[\w**2]**1..79}
+        regex ZTXT_Null {\w**2}
+        regex ZTXT_Compression_method {\w**2}
+        regex ZTXT_Compression_profile {\w**2}
+
+        regex ITXT_Chunk {<ITXT_Keyword><ITXT_Null><ITXT_Compression_flag><ITXT_Compression_method><ITXT_Language><ITXT_Null><ITXT_Translated><ITXT_Null><ITXT_Text>}
+        regex ITXT_Keyword {[\w**2]**1..79}
+        regex ITXT_Null {\w**2}
+        regex ITXT_Compression_flag {\w**2}
+        regex ITXT_Compression_method {\w**2}
+        regex ITXT_Language {\w**2}
+        regex ITXT_Translated {\w**2}
+        regex ITXT_Text {\w**2}
+
+        regex SPLT_Chunk {}
+        regex SPLT_Palette {\w**2}
+        regex SPLT_Null {\w**2}
+        regex SPLT_Depth {\w**2}
+        regex SPLT_Red {\w**2}
+        regex SPLT_Green {\w**2}
+        regex SPLT_Blue {\w**2}
+        regex SPLT_Alpha {\w**2}
+        regex SPLT_Frequency {\w**2}
+        regex SPLT_ {\w**2}
+
 
     }
 }

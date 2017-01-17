@@ -1,7 +1,7 @@
 # use lib ".";
 use image;
 # my $file = slurp("yao.png", :bin);
-read_image("yao.png");
+image::read_image("yao.png");
 # say $file[8..40];
 # say "bytes " ~ $file.bytes;
 # my @a = @file;

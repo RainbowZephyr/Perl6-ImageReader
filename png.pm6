@@ -1,4 +1,5 @@
 module Png {
+    our %png_chunk_headers = ("49484452" => "IHDR", "504c5445" => "PLTE", "49444154" => "IDAT", "49454e44" => "IEND", "74524e53" => "TRNS", "6348524d" => "CHRM", "67414d41" => "GAMA", "69434350" => "ICCP", "73424954" => "SBIT", "73524742" => "SRGB", "74455874" => "TEXT", "7a545874" => "ZTXT", "69545874" => "ITXT", "624b4744" => "BKGD", "68495354" => "HIST", "70485973" => "PHYS", "73504c54" => "SPLT", "TIME" => "74494d45");
     grammar chunks {
         regex TOP {[<Length><Data><CRC>] }
 
@@ -9,43 +10,44 @@ module Png {
         regex Length {\w**8}
 
         proto regex Data {*}
-        regex Data:sym<IHDR> {<IHDR><IHDR_Chunk>}
-        regex Data:sym<PLTE> {<PLTE><PLTE_Chunk>}
-        regex Data:sym<IDAT> {<IDAT><IDAT_Chunk>}
-        regex Data:sym<IEND> {<IEND>}
-        regex Data:sym<TRNS> {<TRNS><TRNS_Format>}
-        regex Data:sym<CHRM> {<CHRM><CHRM_Chunk>}
-        regex Data:sym<GAMA> {<GAMA><GAMA_Chunk>}
-        regex Data:sym<ICCP> {<ICCP><ICCP_Chunk>}
-        regex Data:sym<SBIT> {<SBIT><SBIT_Format>}
-        regex Data:sym<SRGB> {<SRGB><SRGB_Chunk>}
-        regex Data:sym<TEXT> {<TEXT><TEXT_Chunk>}
-        regex Data:sym<ZTXT> {<ZTXT><ZTXT_Chunk>}
-        regex Data:sym<ITXT> {<ITXT><ITXT_Chunk>}
-        regex Data:sym<BKGD> {<BKGD><BKGD_Index>}
-        regex Data:sym<HIST> {<HIST><HIST_Chunk>}
-        regex Data:sym<PHYS> {<PHYS><PHYS_Chunk>}
-        regex Data:sym<SPLT> {<SPLT><SPLT_Chunk>}
-        regex Data:sym<TIME> {<TIME><TIME_Chunk>}
+        regex Data:sym<IHDR> {<Header><IHDR_Chunk>}
+        regex Data:sym<PLTE> {<Header><PLTE_Chunk>}
+        regex Data:sym<IDAT> {<Header><IDAT_Chunk>}
+        regex Data:sym<IEND> {<Header>}
+        regex Data:sym<TRNS> {<Header><TRNS_Format>}
+        regex Data:sym<CHRM> {<Header><CHRM_Chunk>}
+        regex Data:sym<GAMA> {<Header><GAMA_Chunk>}
+        regex Data:sym<ICCP> {<Header><ICCP_Chunk>}
+        regex Data:sym<SBIT> {<Header><SBIT_Format>}
+        regex Data:sym<SRGB> {<Header><SRGB_Chunk>}
+        regex Data:sym<TEXT> {<Header><TEXT_Chunk>}
+        regex Data:sym<ZTXT> {<Header><ZTXT_Chunk>}
+        regex Data:sym<ITXT> {<Header><ITXT_Chunk>}
+        regex Data:sym<BKGD> {<Header><BKGD_Index>}
+        regex Data:sym<HIST> {<Header><HIST_Chunk>}
+        regex Data:sym<PHYS> {<Header><PHYS_Chunk>}
+        regex Data:sym<SPLT> {<Header><SPLT_Chunk>}
+        regex Data:sym<TIME> {<Header><TIME_Chunk>}
 
-        regex IHDR {49484452}
-        regex PLTE {504c5445}
-        regex IDAT {49444154}
-        regex IEND {49454e44}
-        regex TRNS {74524e53}
-        regex CHRM {6348524d}
-        regex GAMA {67414d41}
-        regex ICCP {69434350}
-        regex SBIT {73424954}
-        regex SRGB {73524742}
-        regex TEXT {74455874}
-        regex ZTXT {7a545874}
-        regex ITXT {69545874}
-        regex BKGD {624b4744}
-        regex HIST {68495354}
-        regex PHYS {70485973}
-        regex SPLT {73504c54}
-        regex TIME {74494d45}
+        proto regex Header {*}
+        regex Header:sym<IHDR> {49484452}
+        regex Header:sym<PLTE> {504c5445}
+        regex Header:sym<IDAT> {49444154}
+        regex Header:sym<IEND> {49454e44}
+        regex Header:sym<TRNS> {74524e53}
+        regex Header:sym<CHRM> {6348524d}
+        regex Header:sym<GAMA> {67414d41}
+        regex Header:sym<ICCP> {69434350}
+        regex Header:sym<SBIT> {73424954}
+        regex Header:sym<SRGB> {73524742}
+        regex Header:sym<TEXT> {74455874}
+        regex Header:sym<ZTXT> {7a545874}
+        regex Header:sym<ITXT> {69545874}
+        regex Header:sym<BKGD> {624b4744}
+        regex Header:sym<HIST> {68495354}
+        regex Header:sym<PHYS> {70485973}
+        regex Header:sym<SPLT> {73504c54}
+        regex Header:sym<TIME> {74494d45}
         regex CRC {\w**8}
 
         regex IHDR_Chunk { <IHDR_Width> <IHDR_Height> <IHDR_BitDepth> <IHDR_ColorType> <IHDR_Compression> <IHDR_Filter> <IHDR_Interlace>}

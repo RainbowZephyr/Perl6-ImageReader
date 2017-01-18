@@ -1,5 +1,5 @@
 module Png {
-    our %png_chunk_headers = ("49484452" => "IHDR", "504c5445" => "PLTE", "49444154" => "IDAT", "49454e44" => "IEND", "74524e53" => "TRNS", "6348524d" => "CHRM", "67414d41" => "GAMA", "69434350" => "ICCP", "73424954" => "SBIT", "73524742" => "SRGB", "74455874" => "TEXT", "7a545874" => "ZTXT", "69545874" => "ITXT", "624b4744" => "BKGD", "68495354" => "HIST", "70485973" => "PHYS", "73504c54" => "SPLT", "TIME" => "74494d45");
+    our %png_chunk_headers = ("IHDR" => "49484452", "PLTE" => "504c5445", "IDAT" => "49444154", "IEND" => "49454e44", "TRNS" => "74524e53", "CHRM" => "6348524d", "GAMA" => "67414d41", "ICCP" => "69434350", "SBIT" => "73424954", "SRGB" => "73524742", "TEXT" => "74455874", "ZTXT" => "7a545874", "ITXT" => "69545874", "BKGD" => "624b4744", "HIST" => "68495354", "PHYS" => "70485973", "SPLT" => "73504c54", "TIME" => "74494d45");
     grammar chunks {
         regex TOP {[<Length><Data><CRC>] }
 

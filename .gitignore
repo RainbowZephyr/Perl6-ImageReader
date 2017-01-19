@@ -20,3 +20,5 @@ nytprof.out
 /_eumm/
 .precomp
 bench.pl6
+
+Rust-image/reader/target

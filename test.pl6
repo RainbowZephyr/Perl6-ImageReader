@@ -1,9 +1,11 @@
 use image;
+# use experimental :pack;
+# use experimental :cached;
+
+my $img = image::read_image("lena.bmp");
+
+say $img.get_pixel(511,511)[0];
 
 
-image::read_image("earth.png");
-# my $file = slurp "rainbow.jpg", :bin;
-# say $file[0..*];
-# say loop(5000);
 
 say now - INIT now;

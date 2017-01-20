@@ -11,7 +11,7 @@ our sub read_image(Str $path) is export {
     my Buf $image_file = slurp $path, :bin;
 
     if ($image_file[0] == 0x42 && $image_file[1] == 0x4D) {
-        return read_bmp($image_file);
+        return check_bmp($image_file);
     } elsif ($image_file[0..7] == @png_header) {
         read_png($image_file);
     }
@@ -35,12 +35,27 @@ our sub read_png(Buf $file) {
     }
 }
 
-our sub read_bmp(Buf $file) {
-    my Int $imgx = 54;
-
+our sub check_bmp(Buf $file) {
     my Int $height = :16(($file[25].fmt('%02x') ~ $file[24].fmt('%02x') ~ $file[23].fmt('%02x') ~ $file[22].fmt('%02x')));
 
     my Int $width = :16(($file[21].fmt('%02x') ~ $file[20].fmt('%02x') ~ $file[19].fmt('%02x') ~ $file[18].fmt('%02x')));
+
+    my Int $compression = :16(($file[33].fmt('%02x') ~ $file[32].fmt('%02x') ~ $file[31].fmt('%02x') ~ $file[30].fmt('%02x')));
+
+    my Int $n_colours = :16(($file[49].fmt('%02x') ~ $file[48].fmt('%02x') ~ $file[47].fmt('%02x') ~ $file[46].fmt('%02x')));
+
+    my Int $bpp = :16($file[29].fmt('%02x') ~ $file[28].fmt('%02x'));
+
+    if ($n_colours == 0 && $compression == 0 && $bpp == 24) {
+        return read_bmp24($file, $width, $height);
+    } else {
+        return Any;
+    }
+
+}
+
+our sub read_bmp24(Buf $file, Int $width, Int $height) {
+    my Int $imgx = 54;
 
     my $mat = matrix::Matrix.new($height,$width);
 
@@ -51,6 +66,20 @@ our sub read_bmp(Buf $file) {
         $matx += 1;
         $imgx += 3;
     }
-    
+
     return ($mat);
+}
+
+our sub write_bmp(Str $filename, matrix::Matrix $mat, Int $compression) {
+    my $file = open $filename, :w, :bin;
+    $file.write(Blob.new(0x4D));
+    $file.write(Blob.new(0x42));
+
+    for $mat.data -> $i {
+        # say Buf.new($i).bytes;
+        $file.write(Blob.new($i));
+    }
+    $file.close;
+
+    say(slurp($filename,:bin)[0..*]);
 }

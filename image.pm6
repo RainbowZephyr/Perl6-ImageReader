@@ -82,8 +82,9 @@ our sub write_bmp(Str $filename, matrix::Matrix $mat, Int $compression) {
     $size = change_to_4bytes($mat.data.elems * 3);
     my $width = change_to_4bytes($mat.width);
     my $height = change_to_4bytes($mat.height);
+    my $comp = change_to_4bytes($compression);
 
-    my Buf @DIB = [Buf.new(40), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(:16($width.substr(6,2))), Buf.new(:16($width.substr(4,2))), Buf.new(:16($width.substr(2,2))), Buf.new(:16($width.substr(0,2))), Buf.new(:16($height.substr(6,2))), Buf.new(:16($height.substr(4,2))), Buf.new(:16($height.substr(2,2))), Buf.new(:16($height.substr(0,2))), Buf.new(0x01),Buf.new(0x00), Buf.new(0x18), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(:16($size.substr(6,2))), Buf.new(:16($size.substr(4,2))), Buf.new(:16($size.substr(2,2))), Buf.new(:16($size.substr(0,2))), Buf.new(0x60), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x60), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00) ];
+    my Buf @DIB = [Buf.new(40), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(:16($width.substr(6,2))), Buf.new(:16($width.substr(4,2))), Buf.new(:16($width.substr(2,2))), Buf.new(:16($width.substr(0,2))), Buf.new(:16($height.substr(6,2))), Buf.new(:16($height.substr(4,2))), Buf.new(:16($height.substr(2,2))), Buf.new(:16($height.substr(0,2))), Buf.new(0x01),Buf.new(0x00), Buf.new(0x18), Buf.new(0x00), Buf.new(:16($comp.substr(6,2))), Buf.new(:16($comp.substr(4,2))), Buf.new(:16($comp.substr(2,2))), Buf.new(:16($comp.substr(0,2))), Buf.new(:16($size.substr(6,2))), Buf.new(:16($size.substr(4,2))), Buf.new(:16($size.substr(2,2))), Buf.new(:16($size.substr(0,2))), Buf.new(0x60), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x60), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00), Buf.new(0x00) ];
 
     for @header {$file.write($_);}
     for @DIB {$file.write($_)};

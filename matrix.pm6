@@ -1,15 +1,17 @@
 module matrix {
     class Matrix {
-        has Int $.width;
-        has Int $.height;
-        has  @.data is rw;
+        has $.width;
+        has $.height;
+        has @.data is rw;
+        has $.xdpi is rw;
+        has $.ydpi is rw;
 
         method new ($width, $height) {
             self.bless(:$width,:$height);
         }
 
         method get_pixel(Int $x, Int $y) {
-            return self.data[(self.height - $y - 1) * self.width + $x];
+            return self.data[(self.height - $y - 1) * self.width + $x].reverse;
         }
 
         method set_pixel(Int $x, Int $y, $val) {
@@ -23,6 +25,5 @@ module matrix {
                 }
             }
         }
-
     }
 }

@@ -29,5 +29,7 @@ say $m.data;
 # image::dump("dump", $img.data);
 
 image::write_bmp("hamada.bmp", $m , 0);
-
+encode("WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW");
 say now - INIT now;
+
+sub encode($str) { $str.substr(/(.) $0*/, { $/.chars ~ $0 }, :g) }

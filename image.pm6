@@ -115,3 +115,11 @@ my sub change_to_2bytes($input) returns Str {
 my sub change_to_4bytes($input) returns Str {
     return $input.fmt('%08x');
 }
+
+
+our sub run_length_encode($str) {
+    return $str.subst(/(.) $0*/, { $/.chars ~ $0 }, :g);
+}
+our sub run_length_decode($str) {
+    return $str.subst(/(\d+) (.)/, { $1 x $0 }, :g);
+ }

@@ -53,20 +53,31 @@ our sub check_bmp(Buf $file) {
     }
 
 }
-
+#TODO: ADD PADDING CHECKS
 our sub read_bmp24(Buf $file, Int $width, Int $height) {
     my Int $imgx = 54;
 
-    my $mat = matrix::Matrix.new($height,$width);
+    my $mat = matrix::Matrix.new($width, $height);
 
     my Int $matx = 0;
+    my Int $row_bytes = $width * 3 + 54;
+    my Int $padding  = $width % 4;
+    my Int $padding_counter;
 
     while ($imgx + 2) <= $file.bytes {
         $mat.data[$matx] =  [$file[$imgx],$file[$imgx+1],$file[$imgx+2]];
+
         $matx += 1;
         $imgx += 3;
+        # say $imgx;
+        if ($imgx > 0 && $imgx % $row_bytes == 0) {
+            say "Padded";
+             $imgx += $padding;
+        }
+
     }
 
+    # say $row;
     return ($mat);
 }
 

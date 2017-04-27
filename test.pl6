@@ -5,23 +5,23 @@ use bmp;
 # use experimental :pack;
 # use experimental :cached;
 
-my $img = image::read_image("resources/Umarbles.bmp");
+# my $img = image::read_image("resources/Umarbles.bmp");
 # # image::dump("lenapl", $img.data);
 #
-my $d = open "lenapl", :w;
-for (0..^20) -> $y {
-    for (0..^20) -> $x {
-        $d.say("Location: $x $y: ");
-        $d.say($img.get_pixel($x, $y).reverse);
-    }
-}
-$d.close;
+# my $d = open "lenapl", :w;
+# for (0..^20) -> $y {
+#     for (0..^20) -> $x {
+#         $d.say("Location: $x $y: ");
+#         $d.say($img.get_pixel($x, $y).reverse);
+#     }
+# }
+# $d.close;
 # my $pl = open "lenapl", :r;
 # my $py = open "resources/lenapy", :r;
 
 # say $pl.^methods;
 # say $pl.lines[0].WHAT
-;
+# ;
 
 # for 0..^262144 -> $i {
 #     say $i;
@@ -31,7 +31,8 @@ $d.close;
 # }
 
 
-# my $f = slurp "resources/Umarbles.bmp", :bin;
+my $f = slurp "resources/Umarbles.bmp", :bin;
+say $f[6787];
 # say $f[54..54+4256].grep(/<-[0]>/);
 
 #

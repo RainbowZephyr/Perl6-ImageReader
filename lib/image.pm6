@@ -71,7 +71,7 @@ our sub read_bmp24(Buf $file, Int $width, Int $height) {
         $imgx += 3;
         # say $imgx;
         if ($imgx > 0 && $imgx % $row_bytes == 0) {
-            say "Padded";
+            # say "Padded";
              $imgx += $padding;
         }
 

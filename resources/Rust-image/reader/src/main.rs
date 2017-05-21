@@ -7,20 +7,20 @@ extern crate bmp;
 fn main() {
 
 
-    let mut f = File::open("/home/ahmed/Documents/Perl6-ImageReader/resources/Umarbles.bmp").unwrap();
-    let mut buffer = [0; 1419];
-    let mut hello_world = String::new();
+    // let mut f = File::open("/home/ahmed/asd/Perl6-ImageReader/resources/Umarbles.bmp").unwrap();
+    // let mut buffer = [0; 1419];
+    // let mut hello_world = String::new();
 
 
 
-    f.seek(SeekFrom::Start(((1001 - 11 - 1)*1419*3)+54));
-    f.read_exact(&mut buffer);
+    //f.seek(SeekFrom::Start(((1001 - 11 - 1)*1419*3)+54));
+    //f.read_exact(&mut buffer);
 
-    for i in 0..1419 {
+    // for i in 0..1419 {
         // hello_world = hello_world+ &format!("{:x}", buffer[i] ) + " ";
-        println!("{:?}",format!("{:x}", buffer[i] ));
+    //    println!("{:?}",format!("{:x}", buffer[i] ));
 
-    }
+    //}
     // println!("{:?}",hello_world);
 
     // let mut buff = File::create("foo.txt");
@@ -39,16 +39,16 @@ fn main() {
     // let mut buf=[0u8;12];
     // file.read(&mut buf).unwrap();
 
-    // let img = bmp::open("/home/ahmed/Documents/Perl6-ImageReader/resources/Umarbles.bmp").unwrap_or_else(|e| {
-    //     panic!("Failed to open: {}", e);
-    // });
+    let img = bmp::open("/home/ahmed/asd/Perl6-ImageReader/resources/Umarbles.bmp").unwrap_or_else(|e| {
+        panic!("Failed to open: {}", e);
+    });
 
     // for x in 0..20 {
         // for y in 0..20 {
             // println!("x: {} y: {} {:?}",x,y,img.get_pixel(x, y));
         // }
     // }
-    // println!("{:?}", img.get_pixel(0,11));
+    println!("{:?}", img.get_pixel(0,11));
     // println!("{:?}", img.get_pixel(1,1000));
     // println!("{:?}", img.get_pixel(2,1000));
 
